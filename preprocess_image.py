@@ -37,8 +37,8 @@ if __name__ == '__main__':
 
     #Preprocess all Images with cut/convert to HLS/Normalize
     for el in driving_log:
-        path = '/Users/q367999/Documents/CarND/behaviour_cloning/' + el[0]
-        img_Center = Image.open(path)
+        #path = '/Users/q367999/Documents/CarND/behaviour_cloning/' + el[0]
+        img_Center = Image.open(el[0])
 
         cut_img = cut_images_to_arr(img_Center)
         hls = convert_to_HLS(cut_img)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     X_train, X_val, y_train, y_val = train_test_split(
         X_train,
         y_train,
-        test_size=0.2)
+        test_size=0.1)
 
     #Pickle Data Training and Validation Data to make reuse of it.
     pickle_data = pickle.dumps(

@@ -34,9 +34,11 @@ def telemetry(sid, data):
     speed = data["speed"]
     # The current image from the center camera of the car
     imgString = data["image"]
+
     image = Image.open(BytesIO(base64.b64decode(imgString)))
 
     image_array = np.asarray(image)
+    print(image_array.shape)
 
     #Preprocess data in the same way as TrainingData
     image_array = preprocess_image.cut_images_to_arr(image_array)
