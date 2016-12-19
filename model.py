@@ -22,41 +22,6 @@ X_val = pickle_data['val_dataset']
 y_val = pickle_data['val_labels']
 del pickle_data  # Free up memory
 
-#with open(pickle_file, 'rb') as f:
-#    pickle_data = pickle.load(f)
-#    X_train = pickle_data['train_dataset']
-#    y_train = pickle_data['train_labels']
-#    X_val = pickle_data['val_dataset']
-#    y_val = pickle_data['val_labels']
-#    del pickle_data  # Free up memory
-
-
-#dataframe = pandas.read_csv('./driving_log.csv', header=None)
-#driving_log = dataframe.values
-
-#X_train = []
-#y_train = []
-
-#for el in driving_log:
-#    img = Image.open(el[0])
-#    arr = np.array(img)
-#    arr = arr[50:]
-#    X_train.append(arr)
-#    y_train.append(el[3])
-    # y_train.append((el[3] + 1.)/2.)
-
-
-#def normalize_image(img):
-#    max = np.max(np.max(img))
-#    return (((img) / max) - 0.5)
-
-#X_train = normalize_image(X_train)
-
-#X_train, X_val, y_train, y_val = train_test_split(
-#    X_train,
-#    y_train,
-#    test_size=0.25)
-
 batch_size = 100
 nb_classes = 1
 nb_epoch = 20
@@ -70,27 +35,15 @@ print(X_val.shape[0], 'test samples')
 #---Model-Definition:
 
 input_shape = X_train.shape[1:]
-#input_shape = (110, 320, 1)
-
-#print(input_shape) #(None, 110, 320, 1)
 
 model = Sequential()
 
 model.add(Convolution2D(10, 5, 5, subsample=(5, 5), border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-#model.add(MaxPooling2D(pool_size=(3, 3), border_mode='same', dim_ordering='tf'))
-#model.add(Dropout(0.25))
 model.add(Convolution2D(20, 3, 3, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-#model.add(MaxPooling2D(pool_size=(3, 3), border_mode='same', dim_ordering='tf'))
-#model.add(Dropout(0.25))
 model.add(Convolution2D(30, 2, 2, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-#model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
-#model.add(Dropout(0.25))
 model.add(Convolution2D(40, 2, 2, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
 model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
 model.add(Dropout(0.25))
-#model.add(Convolution2D(160, 3, 3, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-#model.add(MaxPooling2D(pool_size=(3, 3), border_mode='same', dim_ordering='tf'))
-#model.add(Dropout(0.25))
 
 model.add(Flatten())
 model.add(Dense(40, name="hidden1"))
@@ -105,13 +58,8 @@ model.add(Dense(1, name="Steering_Angle"))
 
 model.summary()
 
-# TODO: Compile and train the model to measure validation accuracy.
 model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
 history = model.fit(X_train, y_train, batch_size=batch_size, nb_epoch=nb_epoch, verbose=1, validation_data=(X_val, y_val))
-#score = model.evaluate(X_val, y_val, verbose=0)
-#print('Test score:', score[0])
-#print('Test accuracy:', score[1])
-
 
 json_string = model.to_json()
 with open('./model_v2.json', 'w') as outfile:

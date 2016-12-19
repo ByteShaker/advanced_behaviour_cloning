@@ -15,6 +15,7 @@ from io import BytesIO
 from keras.models import model_from_json
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array
 
+#import preprocess_functionality
 import preprocess_image
 
 sio = socketio.Server()
@@ -22,11 +23,6 @@ app = Flask(__name__)
 model = None
 prev_image_array = None
 
-#----
-def normalize_image(img):
-    max = np.max(np.max(img))
-    return (((img) / max) - 0.5)
-#----
 
 @sio.on('telemetry')
 def telemetry(sid, data):
@@ -42,13 +38,10 @@ def telemetry(sid, data):
 
     image_array = np.asarray(image)
 
+    #Preprocess data in the same way as TrainingData
     image_array = preprocess_image.cut_images_to_arr(image_array)
     image_array = preprocess_image.convert_to_HLS(image_array)
     image_array = preprocess_image.normalize_image(image_array)
-
-    #image_array = image_array[50:]
-    # Normalizing:
-    #image_array = normalize_image(image_array)
 
     transformed_image_array = image_array[None, :, :, :]
 
