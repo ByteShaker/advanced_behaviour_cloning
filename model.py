@@ -22,9 +22,9 @@ X_val = pickle_data['val_dataset']
 y_val = pickle_data['val_labels']
 del pickle_data  # Free up memory
 
-batch_size = 20
+batch_size = 100
 nb_classes = 1
-nb_epoch = 10
+nb_epoch = 40
 
 X_train = X_train.astype('float32')
 X_test = X_val.astype('float32')
@@ -38,22 +38,19 @@ input_shape = X_train.shape[1:]
 
 model = Sequential()
 
-model.add(Convolution2D(4, 4, 4, subsample=(2, 2), border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(8, 1, 1, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
-model.add(Convolution2D(16, 4, 4, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(8, 4, 4, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(4, 4, 4, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(2, 4, 4, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(10, 5, 4, subsample=(5, 4), border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(10, 5, 5, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(10, 5, 5, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(10, 5, 5, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
 model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(32, name="hidden1"))
+model.add(Dense(24, name="hidden1"))
 model.add(Activation('relu'))
-model.add(Dense(16, name="hidden2"))
+model.add(Dense(12, name="hidden2"))
 model.add(Activation('relu'))
-model.add(Dense(8, name="hidden3"))
+model.add(Dense(6, name="hidden3"))
 model.add(Activation('relu'))
 
 model.add(Dropout(0.5))
