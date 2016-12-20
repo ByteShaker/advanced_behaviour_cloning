@@ -43,24 +43,24 @@ if __name__ == '__main__':
         img_Center = Image.open(el[0])
 
         if i==5:
-            img_Center.show()
+            img_Center.save('img1.png')
 
         img_Center = cut_images_to_arr(img_Center)
 
         if i==5:
             img = Image.fromarray(img_Center)
-            img.show()
+            img.save('img2.png')
 
         img_Center = convert_to_HLS(img_Center)
 
         if i==5:
 
             img = Image.fromarray(img_Center[:,:,0])
-            img.show()
+            img.save('img3.png')
             img = Image.fromarray(img_Center[:, :, 1])
-            img.show()
+            img.save('img4.png')
             img = Image.fromarray(img_Center[:, :, 2])
-            img.show()
+            img.save('img5.png')
 
         i += 1
 
