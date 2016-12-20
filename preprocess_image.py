@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 #Cutting the image to the section, that holds the road information
 def cut_images_to_arr(img_Center):
     arr_Center = np.array(img_Center)
-    arr_Center = arr_Center[50:]
+    arr_Center = arr_Center[60:]
     return arr_Center
 
 #Converting the RGB Image to an HLS Image
@@ -35,16 +35,39 @@ if __name__ == '__main__':
     X_train = []
     y_train = []
 
+    i = 0
+
     #Preprocess all Images with cut/convert to HLS/Normalize
     for el in driving_log:
         #path = '/Users/q367999/Documents/CarND/behaviour_cloning/' + el[0]
         img_Center = Image.open(el[0])
 
-        cut_img = cut_images_to_arr(img_Center)
-        hls = convert_to_HLS(cut_img)
-        norm_hls = normalize_image(hls)
+        if i==5:
+            img_Center.show()
 
-        X_train.append(norm_hls)
+        img_Center = cut_images_to_arr(img_Center)
+
+        if i==5:
+            img = Image.fromarray(img_Center)
+            img.show()
+
+        img_Center = convert_to_HLS(img_Center)
+
+        if i==5:
+
+            img = Image.fromarray(img_Center[:,:,0])
+            img.show()
+            img = Image.fromarray(img_Center[:, :, 1])
+            img.show()
+            img = Image.fromarray(img_Center[:, :, 2])
+            img.show()
+
+        i += 1
+
+
+        img_Center = normalize_image(img_Center)
+
+        X_train.append(img_Center)
         y_train.append(el[3])
 
     X_train = np.array(X_train)
@@ -70,7 +93,7 @@ if __name__ == '__main__':
     print(pickle_size)
 
     # Save the data for easy access
-    pickle_file = 'train_data_level3.pickle'
+    pickle_file = 'train_data.pickle'
     exists = False
 
     max_bytes = 2 ** 31 - 1

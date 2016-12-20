@@ -1,36 +1,34 @@
 # behaviour_cloning
 
-
-# Udacity Self-Driving Car Nanodegree
-# Behavioral Cloning Project - 2nd Submission
+# Behaviour Cloning Project Submission
 
 ## Overview
 
-In the first submission, I did all of the work on iPython notebook.
+I created a preprocess_image script and a separated script for learning.
 
-In this second submission, I created standalone python scripts to do all of the deep learning training.
-
-This iPython notebook describes the function of each python script involved in the project.
-
-Follow this link to watch the video **https://www.youtube.com/watch?v=7YA6JL4vcw4**.
+In the following I will explain how the scripts work, and how my algorithm performed.
 
 ---
 
-There are **3** python scripts: **preprocess.py**, **model.py**, and **drive.py**.
+There are **3** python scripts: **preprocess_image.py**, **model.py**, and **drive.py**.
 
 ## preprocess.py
-This python script imports the raw image data and resizes them.
+This python script imports the raw image data and preprocesses them.
 
-I resized the image because image contains unnecessary background noises such as sky, river, and trees.
+Every single preprocess function is in an own definition. So I can reuse the funtionality for the drive.py part.
 
-I decided to remove them and reduced the size of the image by **25%**, then I used only one channel from each image. I found that the image data do not have to have a lot of pixels when training the model. I found reducing the size by 25% and using just one channel were more efficient in terms of time and space.
+I only use the part of the picture, where the streez is ssen. Thats the reason, why I cut the first 50 rows of the picture.
 
-I saved them as **features** and saved the data of steering angels as **labels**.
+Then I convert the picture to HLS, since I found, that the Result is clearer, because color Change doesn't infleunce my network so hard.
 
-Then, I splitted the data into **train** and **validation**, and saved them as **frontcamera.pickle** file.
+At last, I normalize the picture dividing by 255 and subtracting 0.5
+
+The resulting picture_arrays are saved as **features** and the steering angels as **labels**.
+
+Then, I splitted the data into **train** and **validation**, and saved them as **train_data.pickle** file.
 
 ## model.py
-The main purpose of this script is to train the model using the data saved from the above python script.
+In this script the model gets defined and trained. Therefore the saved data from the script above is used.
 
 First, it imports the **pickle** file from the local drive and train the data using model that I built.
 
@@ -41,11 +39,11 @@ When the training is done, the model and weights are saved as **model.json** and
 ## drive.py
 This is the python script that receives the data from the Udacity program, predicts the steering angle using the deep learning model, and send the throttle and the predicted angles back to the program.
 
-Since the images were reshaped and normalized during training, the image from the program is reshaped and normalized just as in **preprocess.py** and **model.py**
+For treating the incoming pictures the same way as the model was trained. I need to reuse the preprocess functions from **preprocess_imgage.py**
 
 ---
 
-## Preprecessing
+## Preprocessing
 
 As mentioned briefly above, the images are loaded from the local drive and reshaped by the function called **load_image**.
 
