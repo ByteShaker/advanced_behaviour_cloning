@@ -6,7 +6,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D, AveragePooling2D
 
-pickle_file = 'train_data_level3.pickle'
+pickle_file = 'train_data.pickle'
 
 bytes_in = bytearray(0)
 max_bytes = 2 ** 31 - 1
