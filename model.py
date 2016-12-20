@@ -24,7 +24,7 @@ del pickle_data  # Free up memory
 
 batch_size = 100
 nb_classes = 1
-nb_epoch = 40
+nb_epoch = 20
 
 X_train = X_train.astype('float32')
 X_test = X_val.astype('float32')

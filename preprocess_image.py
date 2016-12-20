@@ -35,36 +35,13 @@ if __name__ == '__main__':
     X_train = []
     y_train = []
 
-    i = 0
-
     #Preprocess all Images with cut/convert to HLS/Normalize
     for el in driving_log:
         #path = '/Users/q367999/Documents/CarND/behaviour_cloning/' + el[0]
         img_Center = Image.open(el[0])
 
-        if i==5:
-            img_Center.save('img1.png')
-
         img_Center = cut_images_to_arr(img_Center)
-
-        if i==5:
-            img = Image.fromarray(img_Center)
-            img.save('img2.png')
-
         img_Center = convert_to_HLS(img_Center)
-
-        if i==5:
-
-            img = Image.fromarray(img_Center[:,:,0])
-            img.save('img3.png')
-            img = Image.fromarray(img_Center[:, :, 1])
-            img.save('img4.png')
-            img = Image.fromarray(img_Center[:, :, 2])
-            img.save('img5.png')
-
-        i += 1
-
-
         img_Center = normalize_image(img_Center)
 
         X_train.append(img_Center)

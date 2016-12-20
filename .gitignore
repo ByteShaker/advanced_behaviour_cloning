@@ -2,3 +2,7 @@ IMG/
 example_data/
 *.pickle
 *.csv
+.DS_Store
+.idea/workspace.xml
+__pycache__/
+running_env/
