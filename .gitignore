@@ -1,0 +1,4 @@
+IMG/
+example_data/
+*.pickle
+*.csv
