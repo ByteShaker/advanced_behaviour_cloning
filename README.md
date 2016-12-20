@@ -87,6 +87,19 @@ I had total **4592** items.
 
 ## Training
 
+For Training I used **80%** of the the images to train the model.
+And **20%** for validation purposes.
+
+My Batch-Size is 100 images.
+The network ran 20 epochs.
+And finally it gave me a result of **one** steering wheel value.
+
+---
+
+## The Network
+
+Following the architecture of the network can be seen:
+
     ____________________________________________________________________________________________________
     Layer (type)                     Output Shape          Param #     Connected to
     ====================================================================================================
