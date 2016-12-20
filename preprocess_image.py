@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 #Cutting the image to the section, that holds the road information
 def cut_images_to_arr(img_Center):
     arr_Center = np.array(img_Center)
-    arr_Center = arr_Center[60:]
+    arr_Center = arr_Center[50:]
     return arr_Center
 
 #Converting the RGB Image to an HLS Image

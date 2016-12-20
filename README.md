@@ -52,7 +52,7 @@ The Images get loaded from the local drive and preprocessed by the following fun
 #Cutting the image to the section, that holds the road information
 def cut_images_to_arr(img_Center):
     arr_Center = np.array(img_Center)
-    arr_Center = arr_Center[60:]
+    arr_Center = arr_Center[50:]
     return arr_Center
 ```
 ![png](./presentation/img2.png)
