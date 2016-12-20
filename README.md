@@ -63,8 +63,13 @@ def convert_to_HLS(img):
     hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
     return hls
 ```
+H layer
 ![png](./presentation/img3.png)
+
+L layer
 ![png](./presentation/img4.png)
+
+S layer
 ![png](./presentation/img5.png)
 
 ```python
@@ -74,22 +79,6 @@ def normalize_image(img):
     return (((img) / max) - 0.5)
 ```
 
-
-
-
-
-    (1, 18, 80, 1)
-
-
-
-![png](output_5_3.png)
-
-
-    (1, 18, 80, 1)
-
-
-
-![png](output_5_5.png)
 
 
 I had total **18899** items each contained three images from different angles: center, left, and right. So, there are total **18899 x 3 = 56697** images I reshaped and used for training.
