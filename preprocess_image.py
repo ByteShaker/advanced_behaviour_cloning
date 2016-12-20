@@ -53,7 +53,7 @@ if __name__ == '__main__':
     X_train, X_val, y_train, y_val = train_test_split(
         X_train,
         y_train,
-        test_size=0.1)
+        test_size=0.2)
 
     #Pickle Data Training and Validation Data to make reuse of it.
     pickle_data = pickle.dumps(

@@ -38,21 +38,20 @@ input_shape = X_train.shape[1:]
 
 model = Sequential()
 
-model.add(Convolution2D(10, 5, 4, subsample=(5, 4), border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(10, 5, 5, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(10, 5, 5, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
-model.add(Convolution2D(10, 5, 5, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(10, 5, 5, subsample=(5, 5), border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(20, 3, 3, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(30, 2, 2, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
+model.add(Convolution2D(40, 2, 2, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
 model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(24, name="hidden1"))
+model.add(Dense(40, name="hidden1"))
 model.add(Activation('relu'))
-model.add(Dense(12, name="hidden2"))
+model.add(Dense(20, name="hidden2"))
 model.add(Activation('relu'))
-model.add(Dense(6, name="hidden3"))
+model.add(Dense(10, name="hidden3"))
 model.add(Activation('relu'))
-
 model.add(Dropout(0.5))
 model.add(Dense(1, name="Steering_Angle"))
 
