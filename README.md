@@ -81,57 +81,46 @@ def normalize_image(img):
 
 
 
-I had total **18899** items each contained three images from different angles: center, left, and right. So, there are total **18899 x 3 = 56697** images I reshaped and used for training.
+I had total **4592** items.
 
 ---
 
 ## Training
 
-____________________________________________________________________________________________________
-Layer (type)                     Output Shape          Param #     Connected to
-====================================================================================================
-convolution2d_1 (Convolution2D)  (None, 20, 64, 10)    760         convolution2d_input_1[0][0]
-____________________________________________________________________________________________________
-convolution2d_2 (Convolution2D)  (None, 20, 64, 20)    1820        convolution2d_1[0][0]
-____________________________________________________________________________________________________
-convolution2d_3 (Convolution2D)  (None, 20, 64, 30)    2430        convolution2d_2[0][0]
-____________________________________________________________________________________________________
-convolution2d_4 (Convolution2D)  (None, 20, 64, 40)    4840        convolution2d_3[0][0]
-____________________________________________________________________________________________________
-maxpooling2d_1 (MaxPooling2D)    (None, 10, 32, 40)    0           convolution2d_4[0][0]
-____________________________________________________________________________________________________
-dropout_1 (Dropout)              (None, 10, 32, 40)    0           maxpooling2d_1[0][0]
-____________________________________________________________________________________________________
-flatten_1 (Flatten)              (None, 12800)         0           dropout_1[0][0]
-____________________________________________________________________________________________________
-hidden1 (Dense)                  (None, 40)            512040      flatten_1[0][0]
-____________________________________________________________________________________________________
-activation_1 (Activation)        (None, 40)            0           hidden1[0][0]
-____________________________________________________________________________________________________
-hidden2 (Dense)                  (None, 20)            820         activation_1[0][0]
-____________________________________________________________________________________________________
-activation_2 (Activation)        (None, 20)            0           hidden2[0][0]
-____________________________________________________________________________________________________
-hidden3 (Dense)                  (None, 10)            210         activation_2[0][0]
-____________________________________________________________________________________________________
-activation_3 (Activation)        (None, 10)            0           hidden3[0][0]
-____________________________________________________________________________________________________
-dropout_2 (Dropout)              (None, 10)            0           activation_3[0][0]
-____________________________________________________________________________________________________
-Steering_Angle (Dense)           (None, 1)             11          dropout_2[0][0]
-====================================================================================================
-Total params: 522931
-____________________________________________________________________________________________________
----
-# Conclusion
+    ____________________________________________________________________________________________________
+    Layer (type)                     Output Shape          Param #     Connected to
+    ====================================================================================================
+    convolution2d_1 (Convolution2D)  (None, 20, 64, 10)    760         convolution2d_input_1[0][0]
+    ____________________________________________________________________________________________________
+    convolution2d_2 (Convolution2D)  (None, 20, 64, 20)    1820        convolution2d_1[0][0]
+    ____________________________________________________________________________________________________
+    convolution2d_3 (Convolution2D)  (None, 20, 64, 30)    2430        convolution2d_2[0][0]
+    ____________________________________________________________________________________________________
+    convolution2d_4 (Convolution2D)  (None, 20, 64, 40)    4840        convolution2d_3[0][0]
+    ____________________________________________________________________________________________________
+    maxpooling2d_1 (MaxPooling2D)    (None, 10, 32, 40)    0           convolution2d_4[0][0]
+    ____________________________________________________________________________________________________
+    dropout_1 (Dropout)              (None, 10, 32, 40)    0           maxpooling2d_1[0][0]
+    ____________________________________________________________________________________________________
+    flatten_1 (Flatten)              (None, 12800)         0           dropout_1[0][0]
+    ____________________________________________________________________________________________________
+    hidden1 (Dense)                  (None, 40)            512040      flatten_1[0][0]
+    ____________________________________________________________________________________________________
+    activation_1 (Activation)        (None, 40)            0           hidden1[0][0]
+    ____________________________________________________________________________________________________
+    hidden2 (Dense)                  (None, 20)            820         activation_1[0][0]
+    ____________________________________________________________________________________________________
+    activation_2 (Activation)        (None, 20)            0           hidden2[0][0]
+    ____________________________________________________________________________________________________
+    hidden3 (Dense)                  (None, 10)            210         activation_2[0][0]
+    ____________________________________________________________________________________________________
+    activation_3 (Activation)        (None, 10)            0           hidden3[0][0]
+    ____________________________________________________________________________________________________
+    dropout_2 (Dropout)              (None, 10)            0           activation_3[0][0]
+    ____________________________________________________________________________________________________
+    Steering_Angle (Dense)           (None, 1)             11          dropout_2[0][0]
+    ====================================================================================================
+    Total params: 522931
+    ____________________________________________________________________________________________________
+    ---
 
-I found that the whole image can confuse the model due to unncessary background noises such as tries, skies, etc. I decided to cut those unncessary pixels and reduced the size by 25%. I only used red channel of the image because I assumed that red channel contains the better information for identifying the road and lanes than green and blue channels. As a result, the size of the image was 18 x 80 x 1.
-
-In my model, I used 4 convolutional layers with 1 max pooling layer, and 3 more dense layers after flatten the matrix. For each convolutional layer, I decreased the channel size by half. When the size of the channel became 2 in the fourth convolutional layer, I applied max pooling with dropout with 25%. After flatten the matrix, the size of features became 360. I used dense layers with 16 features 4 times. Each **epoch** took about **100** seconds and I used **10 epoches** to train the data. As a result, the car drove by itself without popping onto the edges or out of the edges.
-
-The interesting thing I noticed was even though the model allowed the car to drive itself, the accuracy was only about **58%**. So the accuracy did not have to be high for car to drive autonomously. I believe that to increase the accuracy, I would need more data set and more epoches.
-
-
-```python
-
-```
