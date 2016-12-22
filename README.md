@@ -81,7 +81,7 @@ def normalize_image(img):
 
 
 
-I had total **4592** items.
+I had total **10173** items.
 
 ---
 
@@ -89,9 +89,21 @@ I had total **4592** items.
 
 For Training I used **80%** of the the images to train the model.
 And **20%** for validation purposes.
+Test was always performed in the Simulator
 
 My Batch-Size is 100 images.
 The network ran 20 epochs.
+
+###Hyperparameter Tuning:
+
+Those paramters were tuned on performance of the validation set during training.
+I found for a small batch size and a bigger epoch size my network performed best.
+If I chose the batch size to small (e.g. <20) loss did not get smaller during training.
+
+For Training I used an ADAM Optimizer. And every layer performes a Relu Activation.
+
+To evaluate the model I even collected data on the second Testtrack and the model was able to perform as well.
+
 And finally it gave me a result of **one** steering wheel value.
 
 ---
@@ -103,21 +115,25 @@ Following the architecture of the network can be seen:
     ____________________________________________________________________________________________________
     Layer (type)                     Output Shape          Param #     Connected to
     ====================================================================================================
-    convolution2d_1 (Convolution2D)  (None, 20, 64, 10)    760         convolution2d_input_1[0][0]
+    convolution2d_1 (Convolution2D)  (None, 22, 64, 20)    1520        convolution2d_input_1[0][0]
     ____________________________________________________________________________________________________
-    convolution2d_2 (Convolution2D)  (None, 20, 64, 20)    1820        convolution2d_1[0][0]
+    convolution2d_2 (Convolution2D)  (None, 22, 64, 30)    2430        convolution2d_1[0][0]
     ____________________________________________________________________________________________________
-    convolution2d_3 (Convolution2D)  (None, 20, 64, 30)    2430        convolution2d_2[0][0]
+    maxpooling2d_1 (MaxPooling2D)    (None, 11, 32, 30)    0           convolution2d_2[0][0]
     ____________________________________________________________________________________________________
-    convolution2d_4 (Convolution2D)  (None, 20, 64, 40)    4840        convolution2d_3[0][0]
+    convolution2d_3 (Convolution2D)  (None, 11, 32, 40)    4840        maxpooling2d_1[0][0]
     ____________________________________________________________________________________________________
-    maxpooling2d_1 (MaxPooling2D)    (None, 10, 32, 40)    0           convolution2d_4[0][0]
+    maxpooling2d_2 (MaxPooling2D)    (None, 6, 16, 40)     0           convolution2d_3[0][0]
     ____________________________________________________________________________________________________
-    dropout_1 (Dropout)              (None, 10, 32, 40)    0           maxpooling2d_1[0][0]
+    convolution2d_4 (Convolution2D)  (None, 6, 16, 40)     57640       maxpooling2d_2[0][0]
     ____________________________________________________________________________________________________
-    flatten_1 (Flatten)              (None, 12800)         0           dropout_1[0][0]
+    maxpooling2d_3 (MaxPooling2D)    (None, 3, 8, 40)      0           convolution2d_4[0][0]
     ____________________________________________________________________________________________________
-    hidden1 (Dense)                  (None, 40)            512040      flatten_1[0][0]
+    dropout_1 (Dropout)              (None, 3, 8, 40)      0           maxpooling2d_3[0][0]
+    ____________________________________________________________________________________________________
+    flatten_1 (Flatten)              (None, 960)           0           dropout_1[0][0]
+    ____________________________________________________________________________________________________
+    hidden1 (Dense)                  (None, 40)            38440       flatten_1[0][0]
     ____________________________________________________________________________________________________
     activation_1 (Activation)        (None, 40)            0           hidden1[0][0]
     ____________________________________________________________________________________________________
@@ -133,7 +149,24 @@ Following the architecture of the network can be seen:
     ____________________________________________________________________________________________________
     Steering_Angle (Dense)           (None, 1)             11          dropout_2[0][0]
     ====================================================================================================
-    Total params: 522931
-    ____________________________________________________________________________________________________
-    ---
+    Total params: 105911
+
+###Explanation of the currently used layers:
+
+The first convolutional Layer is for downsizing the picture.
+Doing this in the network is better than reducing the size of the picture beforhand, because information gets lost.
+If my first layer sees a specific pattern in a 5x5 subsample it gets recognized.
+
+Then there are two combinations of a 2x2 Convolutional Layers with a following 2x2 MaxPooling.
+Using this combination neighbored subsamples are connected and the most specific combination is highlighted.
+The amount of this combination was decided by a good resulting shape of the matrix.
+
+After this combination a 6x6 Convolutional Layer with a following 2x2 MaxPooling even gets more Neighbored patterns.
+Since at that time my resultet matrix has a shape of 6x16 the 6x6 sampling takes the combination of all results of the picture in count.
+
+Then I flatten my resulting matrix and am performing 3 Dense Layers.
+During this process my resulting steering wheel value gets identified using the outcome of the Convolution before.
+To dont loose important information the paramter amount is reduced succesivly.
+This avoids big jumps in the resulting value and smoothes the learning keyboard-performed steering labels.
+
 
