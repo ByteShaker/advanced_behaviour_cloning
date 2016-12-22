@@ -43,6 +43,15 @@ For treating the incoming pictures the same way as the model was trained. I need
 
 ---
 
+## Generating Training Data
+
+I was using only keyboard inputs which makes the data a little bit bias.
+But I used the smoothening of the network to get rid of this steering wheel jumps.
+For generating Training Data I drove the race circle 2 times in both directions and added some fallback situations when getting to close to the edges.
+I did the same thing on the second map (level2) to enable the model to perform onthe second course as well.
+
+Using both directions on both maps avoids the network to get a left or right drift trough to many curves in one direction.
+
 ## Preprocessing
 
 The Images get loaded from the local drive and preprocessed by the following functions:
@@ -93,6 +102,7 @@ Test was always performed in the Simulator
 
 My Batch-Size is 100 images.
 The network ran 20 epochs.
+And finally it gave me a result of **one** steering wheel value.
 
 ###Hyperparameter Tuning:
 
@@ -102,9 +112,11 @@ If I chose the batch size to small (e.g. <20) loss did not get smaller during tr
 
 For Training I used an ADAM Optimizer. And every layer performes a Relu Activation.
 
+###Model evaluation
+
 To evaluate the model I even collected data on the second Testtrack and the model was able to perform as well.
 
-And finally it gave me a result of **one** steering wheel value.
+
 
 ---
 
@@ -162,11 +174,11 @@ Using this combination neighbored subsamples are connected and the most specific
 The amount of this combination was decided by a good resulting shape of the matrix.
 
 After this combination a 6x6 Convolutional Layer with a following 2x2 MaxPooling even gets more Neighbored patterns.
-Since at that time my resultet matrix has a shape of 6x16 the 6x6 sampling takes the combination of all results of the picture in count.
+Since at that time my resulted matrix has a shape of 6x16 the 6x6 sampling takes the combination of all results of the picture from left to right in count.
 
 Then I flatten my resulting matrix and am performing 3 Dense Layers.
 During this process my resulting steering wheel value gets identified using the outcome of the Convolution before.
-To dont loose important information the paramter amount is reduced succesivly.
+To dont loose important information the paramter amount is reduced succesively.
 This avoids big jumps in the resulting value and smoothes the learning keyboard-performed steering labels.
 
 

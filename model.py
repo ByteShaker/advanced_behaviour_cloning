@@ -38,6 +38,7 @@ input_shape = X_train.shape[1:]
 
 model = Sequential()
 
+#Start wird 4 Convolutiional Layers to recognize the image
 model.add(Convolution2D(20, 5, 5, subsample=(5, 5), border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
 model.add(Convolution2D(30, 2, 2, border_mode='same', input_shape=input_shape, activation='relu', dim_ordering='tf'))
 model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
@@ -47,6 +48,7 @@ model.add(Convolution2D(40, 6, 6, border_mode='same', input_shape=input_shape, a
 model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same', dim_ordering='tf'))
 model.add(Dropout(0.25))
 
+#Flatten the Matrix to a Vektor and run 3 RELU Layers
 model.add(Flatten())
 model.add(Dense(40, name="hidden1"))
 model.add(Activation('relu'))
