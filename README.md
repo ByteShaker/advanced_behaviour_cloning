@@ -90,7 +90,7 @@ def normalize_image(img):
 
 
 
-I had total **10173** items.
+I had total **12083** items.
 
 ---
 
@@ -101,7 +101,7 @@ And **20%** for validation purposes.
 Test was always performed in the Simulator
 
 My Batch-Size is 100 images.
-The network ran 20 epochs.
+The network ran 35 epochs.
 And finally it gave me a result of **one** steering wheel value.
 
 ###Hyperparameter Tuning:
@@ -109,6 +109,9 @@ And finally it gave me a result of **one** steering wheel value.
 Those paramters were tuned on performance of the validation set during training.
 I found for a small batch size and a bigger epoch size my network performed best.
 If I chose the batch size to small (e.g. <20) loss did not get smaller during training.
+
+For the number of channels in the convolutional layers, I found, that using less than 50 channels in my training data set forces the model to underfit.
+Using more than 100 overfits the model.
 
 For Training I used an ADAM Optimizer. And every layer performes a Relu Activation.
 
@@ -123,6 +126,46 @@ To evaluate the model I even collected data on the second Testtrack and the mode
 ## The Network
 
 Following the architecture of the network can be seen:
+
+    ____________________________________________________________________________________________________
+    Layer (type)                     Output Shape          Param #     Connected to
+    ====================================================================================================
+    convolution2d_1 (Convolution2D)  (None, 22, 64, 80)    6080        convolution2d_input_1[0][0]
+    ____________________________________________________________________________________________________
+    convolution2d_2 (Convolution2D)  (None, 22, 64, 80)    25680       convolution2d_1[0][0]
+    ____________________________________________________________________________________________________
+    maxpooling2d_1 (MaxPooling2D)    (None, 11, 32, 80)    0           convolution2d_2[0][0]
+    ____________________________________________________________________________________________________
+    convolution2d_3 (Convolution2D)  (None, 11, 32, 80)    25680       maxpooling2d_1[0][0]
+    ____________________________________________________________________________________________________
+    maxpooling2d_2 (MaxPooling2D)    (None, 6, 16, 80)     0           convolution2d_3[0][0]
+    ____________________________________________________________________________________________________
+    convolution2d_4 (Convolution2D)  (None, 6, 16, 80)     230480      maxpooling2d_2[0][0]
+    ____________________________________________________________________________________________________
+    maxpooling2d_3 (MaxPooling2D)    (None, 3, 8, 80)      0           convolution2d_4[0][0]
+    ____________________________________________________________________________________________________
+    dropout_1 (Dropout)              (None, 3, 8, 80)      0           maxpooling2d_3[0][0]
+    ____________________________________________________________________________________________________
+    flatten_1 (Flatten)              (None, 1920)          0           dropout_1[0][0]
+    ____________________________________________________________________________________________________
+    hidden1 (Dense)                  (None, 40)            76840       flatten_1[0][0]
+    ____________________________________________________________________________________________________
+    activation_1 (Activation)        (None, 40)            0           hidden1[0][0]
+    ____________________________________________________________________________________________________
+    hidden2 (Dense)                  (None, 20)            820         activation_1[0][0]
+    ____________________________________________________________________________________________________
+    activation_2 (Activation)        (None, 20)            0           hidden2[0][0]
+    ____________________________________________________________________________________________________
+    hidden3 (Dense)                  (None, 10)            210         activation_2[0][0]
+    ____________________________________________________________________________________________________
+    activation_3 (Activation)        (None, 10)            0           hidden3[0][0]
+    ____________________________________________________________________________________________________
+    dropout_2 (Dropout)              (None, 10)            0           activation_3[0][0]
+    ____________________________________________________________________________________________________
+    Steering_Angle (Dense)           (None, 1)             11          dropout_2[0][0]
+    ====================================================================================================
+    Total params: 365801
+
 
     ____________________________________________________________________________________________________
     Layer (type)                     Output Shape          Param #     Connected to
